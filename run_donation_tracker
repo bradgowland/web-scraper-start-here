@@ -1,5 +1,0 @@
-cd /home/bgowland/donation-tracker/
-. venv/bin/activate
-python donation_tracker.py --task update --drive test_2023
-deactivate
-

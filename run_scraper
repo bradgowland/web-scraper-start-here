@@ -1,0 +1,5 @@
+cd /Users/bradgowland/dev/web-scraper-start-here/scraper.py
+. venv/bin/activate
+python scraper.py --task run
+deactivate
+
