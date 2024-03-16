@@ -1,10 +1,6 @@
 import json
-import numpy as np
 import pandas as pd
-import requests
-import shutil
 import time
-from glob import glob
 from datetime import date, datetime, timedelta
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -26,6 +22,9 @@ def get_credentials():
     returns:
         user, pw: ordered pair of credentials from json file
     """
+    print('fetching credentials...')
+    print('~~~~~~~~~~~~~~~')
+
     with open(KEY_FILE) as json_file:
         keys = json.load(json_file)
 
@@ -45,6 +44,9 @@ def get_elements():
     accepts: (none)
     returns: status, int value of success / fail
     """
+    print('scraping webpage...')
+    print('~~~~~~~~~~~~~~~')
+
     # set up web driver
     options = webdriver.ChromeOptions()
     # you can toggle below if you don't want to see the webpage
@@ -73,6 +75,15 @@ def get_elements():
 
 
 def parse_elements(elements):
+    """
+    accepts:
+        elements: a list of selenium elements
+    returns:
+        df: a structured dataframe of element contents
+    """
+    print('parsing elements...')
+    print('~~~~~~~~~~~~~~~')
+
     # extract text
     raw_entries = []
     for element in elements:
@@ -92,6 +103,15 @@ def parse_elements(elements):
 
 
 def save_data(data):
+    """
+    accepts:
+        data: a pandas df of page data
+    returns:
+        status: int, success or failure
+    """
+    print('saving outputs...')
+    print('~~~~~~~~~~~~~~~')
+    
     today = str((datetime.now() - timedelta(hours=4)).date())
     outfile = OUTPUT_PATH + today + '.csv'
     data.to_csv(outfile, index=False)

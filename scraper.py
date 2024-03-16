@@ -2,7 +2,6 @@ import click
 import logging
 import logging.handlers as handlers
 from pathlib import Path
-from datetime import datetime
 from tasks.extract import extract
 
 
@@ -29,6 +28,8 @@ def run_task(**kwargs):
         result = extract()
         log_msg = task + ' complete with status ' + str(result)
         logger.info(log_msg)
+
+        print(log_msg)
     else:
         print('valid --task names are [run]')
 
