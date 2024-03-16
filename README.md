@@ -1,7 +1,7 @@
 # web-scraper-start-here
 A springboard for scraping. Currently fetches albums and artists from the homepage for Aquarium Drunkard, save outputs to a local directory CSV. Just punch in whatever you're looking for and update the parsing function in `tasks/extract`.
 
-# getting started
+### getting started
 Create a directory for the project.
 ```
 $ cd dev/
@@ -26,7 +26,7 @@ Run the basic app.
 $ python scraper.py --task run
 ```
 
-# spellbook
+### spellbook
 Web scraping is often just casting magic spells that follow no discernable rules, so I'm leaving all these here:
 
 ```
