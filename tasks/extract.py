@@ -1,15 +1,16 @@
 import json
-import pandas as pd
+import os
 import time
 from datetime import date, datetime, timedelta
+from dotenv import load_dotenv
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 # change these for your setup as needed
-OUTPUT_PATH = '/Users/bradgowland/dev/web-scraper-start-here/outputs/'
-KEY_FILE = '/path/to/credentials.json'
-URL = 'https://aquariumdrunkard.com/'
+load_dotenv()
+OUTPUT_PATH = os.environ.get("OUTPUT_PATH")
+KEY_FILE = os.environ.get("KEY_FILE")
 
 
 """
@@ -39,7 +40,7 @@ def get_credentials():
     return user, pw
 
 
-def get_elements():
+def get_elements(url, selector):
     """
     accepts: (none)
     returns: status, int value of success / fail
@@ -56,7 +57,7 @@ def get_elements():
     options.add_argument('--no-sandbox')
     driver = webdriver.Chrome(options)
 
-    driver.get(URL)
+    driver.get(url)
     time.sleep(3)
 
     """
@@ -68,44 +69,16 @@ def get_elements():
     """
 
     # get page to scrape
-    selector = '.entry-title a'
     elements = driver.find_elements(By.CSS_SELECTOR, selector)
 
     return elements
 
 
-def parse_elements(elements):
-    """
-    accepts:
-        elements: a list of selenium elements
-    returns:
-        df: a structured dataframe of element contents
-    """
-    print('parsing elements...')
-    print('~~~~~~~~~~~~~~~')
-
-    # extract text
-    raw_entries = []
-    for element in elements:
-        raw_entries.append(element.text)
-
-    # parse text into lists
-    first_pass = True
-    data_list = []
-    for entry in raw_entries:
-        data_list.append(entry.split(" :: "))
-
-    # lists to dataframe
-    df = pd.DataFrame(data_list)
-    df.columns = ['artist', 'album']
-
-    return df
-
-
-def save_data(data):
+def save_data(data, prefix):
     """
     accepts:
         data: a pandas df of page data
+        prefix: a string identifier for the filename
     returns:
         status: int, success or failure
     """
@@ -113,15 +86,7 @@ def save_data(data):
     print('~~~~~~~~~~~~~~~')
     
     today = str((datetime.now() - timedelta(hours=4)).date())
-    outfile = OUTPUT_PATH + today + '.csv'
+    outfile = OUTPUT_PATH + prefix + '_' + today + '.csv'
     data.to_csv(outfile, index=False)
 
     return 1
-
-
-def extract():
-    elements = get_elements()
-    df = parse_elements(elements)
-    result = save_data(df)
-
-    return result
