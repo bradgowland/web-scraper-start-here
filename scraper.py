@@ -2,7 +2,7 @@ import click
 import logging
 import logging.handlers as handlers
 from pathlib import Path
-from tasks.extract import extract
+from tasks.ad import extract as extract_ad
 
 
 # get a logger
@@ -24,8 +24,8 @@ logger.addHandler(logHandler)
 def run_task(**kwargs):
     task = kwargs['task']
 
-    if task == 'run':
-        result = extract()
+    if task == 'ad':
+        result = extract_ad(task)
         log_msg = task + ' complete with status ' + str(result)
         logger.info(log_msg)
 
